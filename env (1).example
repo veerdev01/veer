@@ -1,0 +1,7 @@
+MONGO_URI=mongodb+srv://USERNAME:PASSWORD@cluster.mongodb.net/bothost
+JWT_SECRET=bothost_super_secret_key_2025_change_this
+ADMIN_USER=admin
+ADMIN_PASS=Admin@123
+TG_BOT_TOKEN=AAPKA_TELEGRAM_BOT_TOKEN
+TG_CHAT_ID=AAPKA_TELEGRAM_CHAT_ID
+PORT=3000

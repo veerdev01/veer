@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BotHost — VPS Hosting India</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0a1628; --navy2:#112040; --navy3:#0d1f3c;
+  --cyan:#00c8d7; --cyan2:#00e5f5;
+  --gold:#f5a623; --green:#22c55e; --red:#ef4444;
+  --white:#fff; --gray:#8899aa; --light:#f0f4f8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 36px;background:rgba(10,22,40,0.97);border-bottom:1px solid rgba(0,200,215,0.15);position:sticky;top:0;z-index:300;backdrop-filter:blur(12px);}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;letter-spacing:-1px;cursor:pointer;user-select:none;}
+.logo span{color:var(--cyan);}
+nav ul{list-style:none;display:flex;gap:24px;align-items:center;}
+nav ul a{text-decoration:none;color:var(--gray);font-size:0.86rem;font-weight:500;transition:color .2s;cursor:pointer;}
+nav ul a:hover{color:var(--white);}
+.nav-cta{background:var(--cyan);color:var(--navy)!important;padding:8px 18px;border-radius:8px;font-weight:700!important;}
+.nav-btns{display:flex;gap:10px;align-items:center;}
+.btn-login{background:rgba(0,200,215,0.1);border:1px solid rgba(0,200,215,0.3);color:var(--cyan);padding:8px 16px;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all .2s;}
+.btn-login:hover{background:rgba(0,200,215,0.2);}
+.user-pill{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:6px 12px;border-radius:100px;}
+.user-avatar{width:26px;height:26px;border-radius:50%;background:var(--cyan);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:800;color:var(--navy);flex-shrink:0;}
+.user-pill span{font-size:0.8rem;}
+.btn-logout{font-size:0.72rem;color:var(--gray);background:none;border:none;cursor:pointer;margin-left:4px;transition:color .2s;}
+.btn-logout:hover{color:var(--red);}
+
+.support-bar{display:flex;justify-content:center;gap:12px;padding:14px 20px;background:rgba(0,200,215,0.05);border-bottom:1px solid rgba(0,200,215,0.1);}
+.sup-btn{display:flex;align-items:center;gap:8px;padding:9px 18px;border-radius:10px;font-size:0.82rem;font-weight:700;cursor:pointer;border:none;text-decoration:none;transition:all .2s;}
+.sup-wa{background:#25D366;color:#fff;} .sup-wa:hover{background:#1ebe5d;transform:translateY(-1px);}
+.sup-tg{background:#229ED9;color:#fff;} .sup-tg:hover{background:#1a8cc4;transform:translateY(-1px);}
+
+/* Pages */
+.page{display:none;} .page.active{display:block;}
+
+/* Hero */
+.hero{text-align:center;padding:70px 20px 50px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(0,200,215,0.18) 0%,transparent 70%);pointer-events:none;}
+.badge{display:inline-block;background:rgba(0,200,215,0.12);border:1px solid rgba(0,200,215,0.35);color:var(--cyan);font-size:0.74rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:20px;}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,6vw,3.8rem);font-weight:800;line-height:1.1;letter-spacing:-2px;margin-bottom:16px;}
+.hero h1 em{font-style:normal;color:var(--cyan);}
+.hero p{color:var(--gray);font-size:0.98rem;max-width:490px;margin:0 auto 28px;line-height:1.7;}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{background:var(--cyan);color:var(--navy);border:none;padding:12px 28px;border-radius:10px;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all .2s;}
+.btn-primary:hover{background:var(--cyan2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,200,215,0.3);}
+.btn-outline{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,0.2);padding:12px 28px;border-radius:10px;font-weight:500;font-size:0.9rem;cursor:pointer;transition:all .2s;}
+.btn-outline:hover{border-color:var(--cyan);color:var(--cyan);}
+
+.stats{display:flex;justify-content:center;gap:52px;padding:24px 20px 42px;flex-wrap:wrap;}
+.stat{text-align:center;}
+.stat-num{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--cyan);}
+.stat-label{font-size:0.74rem;color:var(--gray);margin-top:2px;text-transform:uppercase;letter-spacing:1px;}
+
+/* Plans */
+.plans-section{padding:16px 20px 72px;}
+.section-header{text-align:center;margin-bottom:40px;}
+.section-header h2{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;letter-spacing:-1.5px;margin-bottom:7px;}
+.section-header p{color:var(--gray);font-size:0.88rem;}
+.plans-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;max-width:1180px;margin:0 auto;}
+.plan-card{background:var(--navy2);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:26px 22px;position:relative;transition:transform .25s,box-shadow .25s,border-color .25s;overflow:hidden;}
+.plan-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--cyan2));opacity:0;transition:opacity .3s;}
+.plan-card:hover{transform:translateY(-5px);box-shadow:0 16px 44px rgba(0,0,0,0.4);border-color:rgba(0,200,215,0.3);}
+.plan-card:hover::before,.plan-card.featured::before{opacity:1;}
+.plan-card.featured{background:linear-gradient(145deg,#0d2545 0%,#0a3060 100%);border-color:rgba(0,200,215,0.45);}
+.featured-label{position:absolute;top:13px;right:13px;background:var(--cyan);color:var(--navy);font-size:0.66rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:100px;}
+.save-badge{display:inline-block;background:var(--gold);color:#1a0a00;font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:5px;margin-bottom:3px;}
+.orig-price{text-decoration:line-through;color:var(--gray);font-size:0.8rem;margin-left:5px;}
+.plan-name{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:10px;letter-spacing:-0.5px;}
+.plan-price{display:flex;align-items:flex-end;gap:2px;margin-bottom:2px;}
+.price-sym{font-size:1rem;font-weight:600;line-height:1;margin-bottom:6px;color:var(--cyan);}
+.price-num{font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:800;line-height:1;}
+.price-mo{font-size:0.8rem;color:var(--gray);margin-bottom:5px;}
+.plan-term{font-size:0.74rem;color:var(--gray);margin-bottom:18px;line-height:1.5;}
+.plan-divider{border:none;border-top:1px solid rgba(255,255,255,0.07);margin-bottom:15px;}
+.plan-specs{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:20px;}
+.plan-specs li{display:flex;align-items:center;gap:8px;font-size:0.84rem;color:rgba(255,255,255,0.85);}
+.spec-dot{width:7px;height:7px;background:var(--cyan);border-radius:50%;flex-shrink:0;}
+.btn-buy{width:100%;background:var(--cyan);color:var(--navy);border:none;padding:12px;border-radius:9px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.86rem;cursor:pointer;transition:all .2s;}
+.btn-buy:hover{background:var(--cyan2);transform:translateY(-2px);box-shadow:0 5px 18px rgba(0,200,215,0.35);}
+
+/* Features */
+.features-section{background:var(--navy2);border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);padding:56px 20px;}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:26px;max-width:1060px;margin:0 auto;}
+.feature-item{display:flex;flex-direction:column;gap:9px;}
+.feature-icon{width:40px;height:40px;background:rgba(0,200,215,0.1);border:1px solid rgba(0,200,215,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.feature-icon svg{width:19px;height:19px;stroke:var(--cyan);fill:none;stroke-width:1.8;}
+.feature-item h4{font-family:'Syne',sans-serif;font-size:0.92rem;font-weight:700;}
+.feature-item p{font-size:0.8rem;color:var(--gray);line-height:1.6;}
+
+footer{padding:28px 36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-top:1px solid rgba(255,255,255,0.07);}
+.footer-note{font-size:0.74rem;color:var(--gray);}
+.footer-note a{color:var(--cyan);text-decoration:none;}
+
+/* My Orders page */
+.orders-page{padding:40px 24px;max-width:900px;margin:0 auto;}
+.orders-page h2{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;letter-spacing:-1px;margin-bottom:6px;}
+.orders-page .sub{color:var(--gray);font-size:0.86rem;margin-bottom:28px;}
+.order-card{background:var(--navy2);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:20px 22px;margin-bottom:16px;position:relative;}
+.order-card.approved{border-color:rgba(0,200,215,0.3);}
+.order-card.rejected{border-color:rgba(239,68,68,0.3);}
+.oc-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.oc-id{font-family:monospace;font-size:0.82rem;color:var(--cyan);}
+.oc-plan{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;}
+.oc-specs{font-size:0.78rem;color:var(--gray);margin-top:2px;}
+.oc-price{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:var(--cyan);}
+.oc-body{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:0.82rem;color:rgba(255,255,255,0.75);margin-bottom:14px;}
+.oc-body span{color:var(--gray);margin-right:4px;}
+.status-pill{display:inline-block;font-size:0.67rem;font-weight:700;padding:3px 10px;border-radius:100px;text-transform:uppercase;letter-spacing:.5px;}
+.status-pill.pending{background:rgba(245,166,35,0.15);color:var(--gold);border:1px solid rgba(245,166,35,0.3);}
+.status-pill.verified{background:rgba(34,197,94,0.12);color:var(--green);border:1px solid rgba(34,197,94,0.25);}
+.status-pill.approved{background:rgba(0,200,215,0.12);color:var(--cyan);border:1px solid rgba(0,200,215,0.3);}
+.status-pill.rejected{background:rgba(239,68,68,0.12);color:var(--red);border:1px solid rgba(239,68,68,0.25);}
+
+/* VPS Credentials box */
+.cred-box{background:linear-gradient(135deg,rgba(0,200,215,0.07),rgba(0,229,245,0.04));border:1.5px solid rgba(0,200,215,0.3);border-radius:11px;padding:16px 18px;margin-top:14px;}
+.cred-box h5{font-family:'Syne',sans-serif;font-size:0.88rem;font-weight:700;color:var(--cyan);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.cred-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.cred-item label{display:block;font-size:0.68rem;color:var(--gray);text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px;}
+.cred-val{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:7px;padding:8px 10px;font-family:monospace;font-size:0.88rem;color:var(--white);display:flex;justify-content:space-between;align-items:center;gap:8px;word-break:break-all;}
+.copy-btn{background:none;border:none;color:var(--gray);cursor:pointer;font-size:0.75rem;flex-shrink:0;transition:color .2s;padding:0;}
+.copy-btn:hover{color:var(--cyan);}
+.pending-cred{text-align:center;padding:14px;color:var(--gray);font-size:0.82rem;}
+.pending-cred span{display:block;font-size:1.4rem;margin-bottom:6px;}
+
+/* Modals */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(5,12,25,0.93);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(6px);padding:16px;}
+.modal-overlay.active{display:flex;}
+.modal{background:#0e1e38;border:1px solid rgba(0,200,215,0.25);border-radius:18px;width:100%;max-width:450px;max-height:93vh;overflow-y:auto;padding:28px 24px;position:relative;animation:slideUp .3s ease;}
+@keyframes slideUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.modal-close{position:absolute;top:13px;right:13px;background:rgba(255,255,255,0.07);border:none;color:var(--gray);width:28px;height:28px;border-radius:50%;font-size:0.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.modal-close:hover{background:rgba(255,255,255,0.15);color:var(--white);}
+.modal-step{display:none;} .modal-step.active{display:block;}
+.modal h3{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:4px;letter-spacing:-0.5px;}
+.modal-sub{color:var(--gray);font-size:0.8rem;margin-bottom:16px;line-height:1.5;}
+.form-group{margin-bottom:13px;}
+.form-group label{display:block;font-size:0.74rem;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;}
+.form-group input{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:10px 12px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:0.86rem;outline:none;transition:border-color .2s;}
+.form-group input:focus{border-color:var(--cyan);}
+.form-group input::placeholder{color:rgba(255,255,255,0.22);}
+.btn-next{width:100%;background:var(--cyan);color:var(--navy);border:none;padding:12px;border-radius:9px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.88rem;cursor:pointer;transition:all .2s;margin-top:3px;}
+.btn-next:hover{background:var(--cyan2);}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;}
+.order-summary{background:rgba(0,200,215,0.07);border:1px solid rgba(0,200,215,0.2);border-radius:11px;padding:12px 15px;margin-bottom:18px;}
+.order-row{display:flex;justify-content:space-between;align-items:center;font-size:0.81rem;margin-bottom:4px;color:rgba(255,255,255,0.8);}
+.order-row:last-child{margin-bottom:0;font-weight:700;font-size:0.9rem;color:var(--cyan);border-top:1px solid rgba(0,200,215,0.2);padding-top:6px;margin-top:5px;}
+.error-msg{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:7px;padding:8px 12px;font-size:0.78rem;color:#fca5a5;margin-bottom:11px;display:none;}
+.error-msg.show{display:block;}
+.success-msg{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:7px;padding:8px 12px;font-size:0.78rem;color:#86efac;margin-bottom:11px;display:none;}
+.success-msg.show{display:block;}
+.auth-tabs{display:flex;background:rgba(255,255,255,0.04);border-radius:10px;padding:4px;margin-bottom:18px;gap:4px;}
+.auth-tab{flex:1;padding:8px;text-align:center;border-radius:7px;font-size:0.82rem;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--gray);transition:all .2s;}
+.auth-tab.active{background:var(--cyan);color:var(--navy);}
+
+/* Payment */
+.upi-box{background:#fff;border-radius:13px;padding:16px;text-align:center;margin-bottom:14px;}
+.upi-qr{width:160px;height:160px;margin:0 auto 8px;display:block;border-radius:5px;}
+.upi-label{color:#555;font-size:0.73rem;font-weight:600;}
+.upi-amount{color:#111;font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin:3px 0 1px;}
+.upi-name{color:#777;font-size:0.7rem;}
+.upi-id-box{background:rgba(0,200,215,0.08);border:1.5px dashed rgba(0,200,215,0.4);border-radius:9px;padding:10px 13px;text-align:center;margin-bottom:5px;font-size:0.9rem;font-weight:700;color:var(--cyan);word-break:break-all;cursor:pointer;transition:background .2s;}
+.upi-id-box:hover{background:rgba(0,200,215,0.14);}
+.copy-hint{font-size:0.68rem;color:var(--gray);text-align:center;margin-bottom:14px;}
+.steps-list{list-style:none;margin-bottom:16px;}
+.steps-list li{display:flex;gap:9px;align-items:flex-start;font-size:0.79rem;color:rgba(255,255,255,0.76);margin-bottom:8px;line-height:1.5;}
+.snum{min-width:19px;height:19px;background:var(--cyan);color:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.68rem;font-weight:800;flex-shrink:0;margin-top:1px;}
+.utr-wrap{position:relative;}
+.utr-wrap input{padding-right:42px;font-family:monospace;font-size:0.9rem;letter-spacing:1px;}
+.utr-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--gray);cursor:pointer;font-size:0.9rem;}
+.utr-hint{font-size:0.7rem;color:var(--gray);margin-top:4px;line-height:1.5;}
+.verify-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.3);color:var(--green);font-size:0.75rem;font-weight:600;padding:4px 10px;border-radius:100px;}
+
+/* Success */
+.status-icon{width:56px;height:56px;background:rgba(34,197,94,0.12);border:2px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.5rem;}
+.status-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;text-align:center;margin-bottom:6px;}
+.status-msg{color:var(--gray);font-size:0.8rem;text-align:center;line-height:1.6;margin-bottom:16px;}
+.order-id-box{background:rgba(0,200,215,0.07);border:1px solid rgba(0,200,215,0.2);border-radius:9px;padding:12px;text-align:center;margin-bottom:16px;}
+.order-id-box small{font-size:0.68rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;}
+.order-id-box strong{display:block;font-family:monospace;font-size:1rem;color:var(--cyan);margin-top:2px;letter-spacing:1px;}
+.timeline{background:rgba(255,255,255,0.03);border-radius:11px;padding:13px;margin-bottom:16px;}
+.tl-item{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;}
+.tl-item:last-child{margin-bottom:0;}
+.tl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.tl-dot.done{background:var(--green);} .tl-dot.pend{background:var(--gold);} .tl-dot.wait{background:var(--gray);}
+.tl-text{font-size:0.78rem;line-height:1.5;}
+.tl-text strong{display:block;color:var(--white);}
+.tl-text span{color:var(--gray);}
+
+/* Admin */
+#adminPanel{display:none;position:fixed;inset:0;background:var(--navy);z-index:5000;overflow-y:auto;}
+.admin-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(10,22,40,0.98);border-bottom:1px solid rgba(0,200,215,0.2);position:sticky;top:0;z-index:10;}
+.admin-badge{background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.4);color:var(--gold);font-size:0.7rem;font-weight:700;padding:3px 9px;border-radius:100px;margin-left:10px;letter-spacing:1px;text-transform:uppercase;}
+.admin-close{background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#f87171;padding:7px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;}
+.admin-body{padding:24px 28px;max-width:1200px;margin:0 auto;}
+.admin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:28px;}
+.admin-stat-card{background:var(--navy2);border:1px solid rgba(255,255,255,0.07);border-radius:13px;padding:18px 16px;}
+.ast-label{font-size:0.72rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.ast-val{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;}
+.ast-val.cyan{color:var(--cyan);} .ast-val.green{color:var(--green);} .ast-val.gold{color:var(--gold);}
+.admin-section{background:var(--navy2);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:20px;margin-bottom:20px;}
+.admin-section h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.admin-section h4 .dot{width:8px;height:8px;background:var(--cyan);border-radius:50%;}
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.s-group{display:flex;flex-direction:column;gap:5px;}
+.s-group label{font-size:0.72rem;color:var(--gray);text-transform:uppercase;letter-spacing:.7px;}
+.s-group input{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:9px 11px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:0.84rem;outline:none;transition:border-color .2s;width:100%;}
+.s-group input:focus{border-color:var(--cyan);}
+.s-group.full{grid-column:1/-1;}
+.save-btn{background:var(--cyan);color:var(--navy);border:none;padding:10px 22px;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.84rem;cursor:pointer;transition:all .2s;margin-top:10px;}
+.save-btn:hover{background:var(--cyan2);}
+.save-msg{font-size:0.78rem;color:var(--green);margin-top:8px;display:none;}
+.save-msg.show{display:block;}
+.plans-table,.orders-table,.users-table{width:100%;border-collapse:collapse;}
+.plans-table th,.orders-table th,.users-table th{text-align:left;font-size:0.7rem;text-transform:uppercase;letter-spacing:.8px;color:var(--gray);padding:0 8px 10px;border-bottom:1px solid rgba(255,255,255,0.07);}
+.plans-table td,.orders-table td,.users-table td{padding:9px 8px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.8rem;vertical-align:middle;}
+.price-edit{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:6px 10px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:0.83rem;width:90px;outline:none;}
+.price-edit:focus{border-color:var(--cyan);}
+.approve-btn{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:var(--green);padding:4px 8px;border-radius:6px;font-size:0.72rem;font-weight:600;cursor:pointer;margin-right:4px;}
+.reject-btn{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:var(--red);padding:4px 8px;border-radius:6px;font-size:0.72rem;font-weight:600;cursor:pointer;}
+.cred-btn{background:rgba(0,200,215,0.1);border:1px solid rgba(0,200,215,0.3);color:var(--cyan);padding:4px 8px;border-radius:6px;font-size:0.72rem;font-weight:600;cursor:pointer;}
+.no-data{text-align:center;color:var(--gray);font-size:0.84rem;padding:24px;}
+.avatar-sm{width:28px;height:28px;border-radius:50%;background:var(--cyan);color:var(--navy);font-size:0.7rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;margin-right:7px;}
+
+/* Credentials modal in admin */
+.cred-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+#adminLoginOverlay{display:none;position:fixed;inset:0;background:rgba(5,12,25,0.95);z-index:4999;align-items:center;justify-content:center;backdrop-filter:blur(6px);}
+#adminLoginOverlay.active{display:flex;}
+.admin-login-box{background:#0e1e38;border:1px solid rgba(0,200,215,0.25);border-radius:18px;width:100%;max-width:360px;padding:32px 28px;animation:slideUp .3s ease;}
+
+.modal::-webkit-scrollbar,#adminPanel::-webkit-scrollbar{width:4px;}
+.modal::-webkit-scrollbar-thumb,#adminPanel::-webkit-scrollbar-thumb{background:rgba(0,200,215,0.3);border-radius:4px;}
+.loading-spinner{display:inline-block;width:13px;height:13px;border:2px solid rgba(10,22,40,0.3);border-top-color:var(--navy);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:4px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+.hero>*{animation:fadeUp .6s ease both;}
+.hero>.badge{animation-delay:.05s} .hero>h1{animation-delay:.12s} .hero>p{animation-delay:.2s} .hero>.hero-btns{animation-delay:.28s}
+
+/* ── OS & LOCATION SELECTION ── */
+.config-section{margin-bottom:18px;}
+.config-label{font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--gray);margin-bottom:10px;display:block;}
+
+/* Location Cards */
+.location-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.loc-card{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.09);border-radius:10px;padding:10px 13px;cursor:pointer;transition:all .2s;font-size:0.84rem;font-weight:500;}
+.loc-card:hover{border-color:rgba(0,200,215,0.4);background:rgba(0,200,215,0.05);}
+.loc-card.selected,.loc-card input:checked+span{color:var(--white);}
+.loc-card.selected{border-color:var(--cyan);background:rgba(0,200,215,0.1);}
+.loc-card input[type=radio]{display:none;}
+.loc-radio{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,0.25);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.loc-card.selected .loc-radio{border-color:var(--cyan);background:var(--cyan);}
+.loc-card.selected .loc-radio::after{content:'';width:6px;height:6px;background:var(--navy);border-radius:50%;}
+.loc-flag{font-size:1.2rem;flex-shrink:0;}
+.loc-name{flex:1;}
+
+/* OS Cards */
+.os-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.os-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.09);border-radius:12px;padding:14px 10px;cursor:pointer;transition:all .2s;text-align:center;position:relative;}
+.os-card:hover{border-color:rgba(0,200,215,0.4);background:rgba(0,200,215,0.05);}
+.os-card.selected{border-color:var(--cyan);background:rgba(0,200,215,0.1);}
+.os-card input[type=radio]{position:absolute;top:8px;left:8px;accent-color:var(--cyan);}
+.os-logo{width:40px;height:40px;display:flex;align-items:center;justify-content:center;margin-top:6px;}
+.os-name{font-size:0.8rem;font-weight:600;color:var(--white);}
+.os-inc{font-size:0.68rem;color:var(--gray);}
+
+/* Updated plan card to better match screenshots */
+.plan-card .price-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.plan-card .price-main{display:flex;align-items:flex-start;gap:2px;line-height:1;}
+.plan-card .price-period{font-size:0.8rem;color:var(--gray);align-self:flex-end;margin-bottom:6px;}
+.plan-term{font-size:0.74rem;font-weight:600;color:rgba(255,255,255,0.75);margin-bottom:16px;line-height:1.5;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo" id="logoEl">Nex<span>Host</span></div>
+  <ul>
+    <li><a onclick="showPage('home')">Home</a></li>
+    <li><a onclick="showPage('home');setTimeout(()=>document.getElementById('plans').scrollIntoView({behavior:'smooth'}),100)">Plans</a></li>
+    <li><a id="myOrdersLink" style="display:none" onclick="showMyOrders()">My Orders</a></li>
+    <li><a class="nav-cta" onclick="showPage('home');setTimeout(()=>document.getElementById('plans').scrollIntoView({behavior:'smooth'}),100)">Get Started</a></li>
+  </ul>
+  <div class="nav-btns" id="navBtns">
+    <button class="btn-login" onclick="openAuthModal()">Login / Sign Up</button>
+  </div>
+</nav>
+
+<div class="support-bar">
+  <a class="sup-btn sup-wa" id="waBtn" href="#" target="_blank">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    WhatsApp Support
+  </a>
+  <a class="sup-btn sup-tg" id="tgBtn" href="#" target="_blank">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+    Telegram Support
+  </a>
+</div>
+
+<!-- HOME PAGE -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="badge">⚡ India's Fastest VPS Hosting</div>
+    <h1>Powerful <em>VPS Servers</em><br>Built for India</h1>
+    <p>Enterprise-grade virtual private servers with NVMe SSD, DDoS protection, and 24/7 support — starting at just ₹199/month.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('plans').scrollIntoView({behavior:'smooth'})">View Plans & Pricing</button>
+      <button class="btn-outline">Talk to Sales</button>
+    </div>
+  </section>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num">99.9%</div><div class="stat-label">Uptime SLA</div></div>
+    <div class="stat"><div class="stat-num">5000+</div><div class="stat-label">Active Servers</div></div>
+    <div class="stat"><div class="stat-num">&lt;1ms</div><div class="stat-label">India Latency</div></div>
+    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Expert Support</div></div>
+  </div>
+
+  <section class="plans-section" id="plans">
+    <div class="section-header">
+      <h2>Choose Your Plan</h2>
+      <p>All plans include free setup, DDoS protection, and full root access</p>
+    </div>
+    <div class="plans-grid" id="plansGrid">
+      <div style="text-align:center;color:var(--gray);padding:40px;grid-column:1/-1;">Loading plans...</div>
+    </div>
+  </section>
+
+  <section class="features-section" id="features">
+    <div class="section-header" style="margin-bottom:36px">
+      <h2>Why Choose BotHost?</h2>
+      <p>Everything you need to run your workloads without compromise</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-item"><div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><h4>NVMe SSD Storage</h4><p>Up to 10x faster than traditional SSD with blazing-fast I/O performance.</p></div>
+      <div class="feature-item"><div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h4>DDoS Protection</h4><p>Always-on protection against volumetric attacks, free with every plan.</p></div>
+      <div class="feature-item"><div class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><h4>99.9% Uptime SLA</h4><p>Guaranteed availability backed by our enterprise infrastructure in India.</p></div>
+      <div class="feature-item"><div class="feature-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><h4>Full Root Access</h4><p>Complete control over your server with SSH access and any OS of your choice.</p></div>
+      <div class="feature-item"><div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h4>24/7 Support</h4><p>Reach us anytime on WhatsApp or Telegram — real humans, not bots.</p></div>
+      <div class="feature-item"><div class="feature-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><h4>Instant Provisioning</h4><p>VPS credentials delivered in your account dashboard after payment confirmation.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="logo">Nex<span>Host</span></div>
+    <div class="footer-note">© 2025 BotHost. All rights reserved. | <a href="#">Terms</a> | <a href="#">Privacy</a></div>
+    <div class="footer-note">Made with ❤️ in India 🇮🇳</div>
+  </footer>
+</div>
+
+<!-- MY ORDERS PAGE -->
+<div id="page-orders" class="page">
+  <div class="orders-page">
+    <h2>My Orders</h2>
+    <p class="sub">View your VPS orders and access credentials after approval.</p>
+    <div id="myOrdersList"><div style="text-align:center;color:var(--gray);padding:40px;">Loading orders...</div></div>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeAuthModal()">✕</button>
+    <h3>Welcome to BotHost</h3>
+    <p class="modal-sub">Login or create an account to order VPS plans.</p>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Login</button>
+      <button class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Sign Up</button>
+    </div>
+    <div class="error-msg" id="authError"></div>
+    <div class="success-msg" id="authSuccess"></div>
+    <div id="loginForm">
+      <div class="form-group"><label>Email Address</label><input type="email" id="loginEmail" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doLogin()" /></div>
+      <div class="form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()" /></div>
+      <button class="btn-next" id="loginBtn" onclick="doLogin()">Login to Account</button>
+    </div>
+    <div id="registerForm" style="display:none">
+      <div class="form-group"><label>Full Name</label><input type="text" id="regName" placeholder="John Doe" /></div>
+      <div class="form-group"><label>Email Address</label><input type="email" id="regEmail" placeholder="you@example.com" /></div>
+      <div class="form-group"><label>Password (min 6 characters)</label><input type="password" id="regPassword" placeholder="Create a strong password" /></div>
+      <div class="form-group"><label>Confirm Password</label><input type="password" id="regConfirm" placeholder="Repeat your password" /></div>
+      <button class="btn-next" id="registerBtn" onclick="doRegister()">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- ORDER MODAL -->
+<div class="modal-overlay" id="orderOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeOrderModal()">✕</button>
+    <div class="modal-step active" id="ostep1">
+      <h3>🛒 Configure Your VPS</h3>
+      <p class="modal-sub" id="os1PlanLabel">—</p>
+      <div class="order-summary" style="margin-bottom:18px;">
+        <div class="order-row"><span>Plan</span><strong id="os1Plan">—</strong></div>
+        <div class="order-row"><span>Specs</span><span id="os1Specs">—</span></div>
+        <div class="order-row"><span>💰 Amount</span><span id="os1Price">—</span></div>
+      </div>
+
+      <!-- Server Location -->
+      <div class="config-section">
+        <span class="config-label">🌍 Server Location</span>
+        <div class="location-grid" id="locationGrid">
+          <div class="loc-card selected" onclick="selectLocation(this)">
+            <div class="loc-radio"></div><span class="loc-flag">🇮🇳</span><span class="loc-name">India</span>
+          </div>
+          <div class="loc-card" onclick="selectLocation(this)">
+            <div class="loc-radio"></div><span class="loc-flag">🇸🇬</span><span class="loc-name">Singapore</span>
+          </div>
+          <div class="loc-card" onclick="selectLocation(this)">
+            <div class="loc-radio"></div><span class="loc-flag">🇺🇸</span><span class="loc-name">United States</span>
+          </div>
+          <div class="loc-card" onclick="selectLocation(this)">
+            <div class="loc-radio"></div><span class="loc-flag">🇬🇧</span><span class="loc-name">United Kingdom</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- OS Selection -->
+      <div class="config-section">
+        <span class="config-label">🖥️ Operating System</span>
+        <div class="os-grid" id="osGrid">
+          <div class="os-card selected" onclick="selectOS(this)">
+            <input type="radio" name="osRadio" checked>
+            <div class="os-logo">
+              <svg width="38" height="38" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#E95420"/><circle cx="50" cy="18" r="10" fill="#fff"/><circle cx="79" cy="67" r="10" fill="#fff"/><circle cx="21" cy="67" r="10" fill="#fff"/><line x1="50" y1="28" x2="68" y2="57" stroke="#fff" stroke-width="6"/><line x1="50" y1="28" x2="32" y2="57" stroke="#fff" stroke-width="6"/><line x1="32" y1="57" x2="68" y2="57" stroke="#fff" stroke-width="6"/></svg>
+            </div>
+            <div class="os-name">Ubuntu 24.04</div>
+            <div class="os-inc">Included</div>
+          </div>
+          <div class="os-card" onclick="selectOS(this)">
+            <input type="radio" name="osRadio">
+            <div class="os-logo">
+              <svg width="38" height="38" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#10B981"/><polygon points="50,15 85,80 15,80" fill="none" stroke="#fff" stroke-width="8"/><polygon points="50,35 70,75 30,75" fill="#fff" opacity="0.3"/></svg>
+            </div>
+            <div class="os-name">Rocky 9 (latest)</div>
+            <div class="os-inc">Included</div>
+          </div>
+          <div class="os-card" onclick="selectOS(this)">
+            <input type="radio" name="osRadio">
+            <div class="os-logo">
+              <svg width="38" height="38" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#A80030"/><path d="M50 20 C50 20, 35 25, 30 40 C25 55, 35 65, 50 65 C65 65, 75 55, 70 40 C65 25, 50 20, 50 20Z" fill="#fff" opacity="0.9"/><path d="M50 35 C50 35, 42 38, 40 47 C38 56, 44 62, 50 62 C56 62, 62 56, 60 47 C58 38, 50 35, 50 35Z" fill="#A80030"/></svg>
+            </div>
+            <div class="os-name">Debian 12</div>
+            <div class="os-inc">Included</div>
+          </div>
+          <div class="os-card" onclick="selectOS(this)">
+            <input type="radio" name="osRadio">
+            <div class="os-logo">
+              <svg width="38" height="38" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#1D2B4F"/><circle cx="35" cy="38" r="9" fill="#FF6B6B"/><circle cx="65" cy="38" r="9" fill="#4ECDC4"/><circle cx="35" cy="62" r="9" fill="#45B7D1"/><circle cx="65" cy="62" r="9" fill="#96CEB4"/><line x1="35" y1="38" x2="65" y2="38" stroke="#fff" stroke-width="3" opacity="0.5"/><line x1="35" y1="62" x2="65" y2="62" stroke="#fff" stroke-width="3" opacity="0.5"/><line x1="35" y1="38" x2="35" y2="62" stroke="#fff" stroke-width="3" opacity="0.5"/><line x1="65" y1="38" x2="65" y2="62" stroke="#fff" stroke-width="3" opacity="0.5"/></svg>
+            </div>
+            <div class="os-name">Alma 9 (latest)</div>
+            <div class="os-inc">Included</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group"><label>WhatsApp Number *</label><input type="tel" id="waInput" placeholder="+91 98765 43210" maxlength="14" /></div>
+      <div class="error-msg" id="oerr1">⚠️ WhatsApp number is required.</div>
+      <button class="btn-next" onclick="goOrderStep(2)">Proceed to Payment →</button>
+    </div>
+
+    <div class="modal-step" id="ostep2">
+      <h3>💳 Make UPI Payment</h3>
+      <p class="modal-sub">Pay via UPI, then enter your UTR to auto-verify instantly.</p>
+      <div class="order-summary">
+        <div class="order-row"><span>Plan</span><strong id="os2Plan">—</strong></div>
+        <div class="order-row"><span>💰 Pay</span><strong id="os2Price" style="color:var(--cyan)">—</strong></div>
+      </div>
+      <div class="upi-box">
+        <img class="upi-qr" id="upiQr" src="" alt="UPI QR" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay'"/>
+        <div class="upi-label">UPI Payment — Scan to Pay</div>
+        <div class="upi-amount" id="upiAmtTxt">₹0</div>
+        <div class="upi-name">BotHost VPS Payment</div>
+      </div>
+      <div class="upi-id-box" id="upiIdDisplay" onclick="copyUPI()">Loading...</div>
+      <div class="copy-hint" id="copyHintTxt">👆 Click to copy UPI ID</div>
+      <ul class="steps-list">
+        <li><span class="snum">1</span>Open PhonePe / GPay / Paytm</li>
+        <li><span class="snum">2</span>Scan QR or send exact amount to UPI ID</li>
+        <li><span class="snum">3</span>Copy Transaction ID / UTR from your app</li>
+        <li><span class="snum">4</span>Enter UTR below — auto-verified instantly</li>
+      </ul>
+      <div class="form-group">
+        <label>UTR / Transaction ID *</label>
+        <div class="utr-wrap">
+          <input type="text" id="utrInput" placeholder="e.g. 412345678901" maxlength="30" oninput="onUTRInput()" />
+          <button class="utr-clear" onclick="document.getElementById('utrInput').value='';onUTRInput()">✕</button>
+        </div>
+        <div class="utr-hint">💡 10-24 digit number. Find it in your UPI app → Transaction Details.</div>
+      </div>
+      <div id="utrVerifyStatus" style="margin-bottom:10px;display:none;">
+        <span class="verify-badge">✅ UTR format valid — will auto-verify on submit</span>
+      </div>
+      <div class="error-msg" id="oerr2">⚠️ Please enter a valid UTR (10-24 digits).</div>
+      <button class="btn-next" id="submitBtn" onclick="submitOrder()">✅ Confirm & Submit Order</button>
+      <button class="btn-outline" style="width:100%;margin-top:9px;padding:10px;" onclick="goOrderStep(1)">← Go Back</button>
+    </div>
+
+    <div class="modal-step" id="ostep3">
+      <div class="status-icon">✅</div>
+      <div class="status-title">Order Placed Successfully!</div>
+      <p class="status-msg">UTR verified! Admin will assign your VPS and credentials will appear in <strong>My Orders</strong> on this website.</p>
+      <div class="order-id-box">
+        <small>Your Order ID — Please Save</small>
+        <strong id="finalOrderId">—</strong>
+      </div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-dot done"></div><div class="tl-text"><strong>✅ UTR Auto-Verified</strong><span>Payment reference recorded</span></div></div>
+        <div class="tl-item"><div class="tl-dot pend"></div><div class="tl-text"><strong>⚙️ VPS Being Configured</strong><span>Admin will set up your server</span></div></div>
+        <div class="tl-item"><div class="tl-dot wait"></div><div class="tl-text"><strong>🖥️ Credentials in My Orders</strong><span>Login here to view IP & password</span></div></div>
+      </div>
+      <button class="btn-next" onclick="closeOrderModal();showMyOrders()">View My Orders →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div id="adminLoginOverlay">
+  <div class="admin-login-box">
+    <div class="logo" style="margin-bottom:6px;">Nex<span style="color:var(--cyan)">Host</span></div>
+    <div style="font-size:0.8rem;color:var(--gold);margin-bottom:20px;">⚙️ Admin Access</div>
+    <div class="error-msg" id="adminLoginErr"></div>
+    <div class="form-group"><label>Username</label><input type="text" id="adminUsername" placeholder="admin" /></div>
+    <div class="form-group"><label>Password</label><input type="password" id="adminPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminLogin()" /></div>
+    <button class="btn-next" onclick="doAdminLogin()">Login to Admin Panel</button>
+    <button class="btn-outline" style="width:100%;margin-top:8px;padding:10px;" onclick="closeAdminLogin()">Cancel</button>
+  </div>
+</div>
+
+<!-- CREDENTIALS MODAL (admin sets VPS IP/pass) -->
+<div class="modal-overlay" id="credOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeCredModal()">✕</button>
+    <h3>🖥️ Set VPS Credentials</h3>
+    <p class="modal-sub" id="credModalSub">Assign VPS credentials — customer will see them in their account.</p>
+    <input type="hidden" id="credOrderMongoId" />
+    <input type="hidden" id="credOrderId" />
+    <div class="cred-form-grid">
+      <div class="form-group" style="grid-column:1/-1"><label>VPS IP Address *</label><input type="text" id="credIp" placeholder="192.168.1.1" /></div>
+      <div class="form-group"><label>Username</label><input type="text" id="credUser" placeholder="root" value="root" /></div>
+      <div class="form-group"><label>SSH Port</label><input type="text" id="credPort" placeholder="22" value="22" /></div>
+      <div class="form-group" style="grid-column:1/-1"><label>Password *</label><input type="text" id="credPass" placeholder="Enter VPS password" /></div>
+      <div class="form-group" style="grid-column:1/-1"><label>Note (Optional)</label><input type="text" id="credNote" placeholder="e.g. Ubuntu 22.04 installed" /></div>
+    </div>
+    <div class="error-msg" id="credErr"></div>
+    <button class="btn-next" id="credSubmitBtn" onclick="submitCredentials()">✅ Save & Approve Order</button>
+    <button class="btn-outline" style="width:100%;margin-top:8px;padding:10px;" onclick="closeCredModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+  <div class="admin-nav">
+    <div style="display:flex;align-items:center;">
+      <div class="logo">Nex<span>Host</span></div>
+      <span class="admin-badge">⚙️ Admin Panel</span>
+    </div>
+    <button class="admin-close" onclick="closeAdmin()">✕ Close</button>
+  </div>
+  <div class="admin-body">
+    <div class="admin-grid">
+      <div class="admin-stat-card"><div class="ast-label">Total Orders</div><div class="ast-val cyan" id="statOrders">—</div></div>
+      <div class="admin-stat-card"><div class="ast-label">Pending</div><div class="ast-val gold" id="statPending">—</div></div>
+      <div class="admin-stat-card"><div class="ast-label">Verified</div><div class="ast-val green" id="statVerified">—</div></div>
+      <div class="admin-stat-card"><div class="ast-label">Approved</div><div class="ast-val cyan" id="statApproved">—</div></div>
+      <div class="admin-stat-card"><div class="ast-label">Total Users</div><div class="ast-val cyan" id="statUsers">—</div></div>
+      <div class="admin-stat-card"><div class="ast-label">Revenue</div><div class="ast-val green" id="statRevenue">—</div></div>
+    </div>
+
+    <div class="admin-section">
+      <h4><span class="dot"></span>Payment & Support Settings</h4>
+      <div class="settings-grid">
+        <div class="s-group full"><label>UPI ID</label><input type="text" id="adminUpiId" placeholder="yourname@bharatpe" /></div>
+        <div class="s-group full"><label>UPI QR Image URL</label><input type="text" id="adminQrUrl" placeholder="https://... (blank = auto-generate)" /></div>
+        <div class="s-group"><label>WhatsApp Number</label><input type="text" id="adminWa" placeholder="919876543210" /></div>
+        <div class="s-group"><label>Telegram Username</label><input type="text" id="adminTg" placeholder="@YourUsername" /></div>
+      </div>
+      <div style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(0,200,215,0.15);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <span style="font-size:1rem;">🏦</span>
+          <span style="font-family:'Syne',sans-serif;font-size:0.88rem;font-weight:700;color:var(--cyan);">BharatPe Auto-Verification</span>
+          <span style="font-size:0.68rem;background:rgba(34,197,94,0.15);color:var(--green);border:1px solid rgba(34,197,94,0.3);padding:2px 8px;border-radius:100px;font-weight:700;">AUTO UTR</span>
+        </div>
+        <div class="settings-grid">
+          <div class="s-group"><label>BharatPe Merchant ID</label><input type="text" id="adminBpMerchantId" placeholder="Your Merchant ID" /></div>
+          <div class="s-group"><label>BharatPe Token</label><input type="password" id="adminBpToken" placeholder="Your API Token" /></div>
+        </div>
+        <p style="font-size:0.74rem;color:var(--gray);margin-top:6px;">⚡ UTR daalne par automatically BharatPe se verify hoga — manual review ki zarurat nahi!</p>
+      </div>
+      <button class="save-btn" onclick="saveSettings()">Save Settings</button>
+      <div class="save-msg" id="settingsSaved">✅ Settings saved.</div>
+    </div>
+
+    <div class="admin-section">
+      <h4><span class="dot"></span>Plan Pricing</h4>
+      <div style="overflow-x:auto;">
+        <table class="plans-table">
+          <thead><tr><th>Plan</th><th>CPU</th><th>RAM</th><th>Storage</th><th>Sale Price (₹)</th><th>Original (₹)</th></tr></thead>
+          <tbody id="adminPlansBody"></tbody>
+        </table>
+      </div>
+      <button class="save-btn" style="margin-top:14px;" onclick="savePrices()">Save Prices</button>
+      <div class="save-msg" id="pricesSaved">✅ Prices updated.</div>
+    </div>
+
+    <div class="admin-section">
+      <h4><span class="dot"></span>All Orders</h4>
+      <div style="overflow-x:auto;">
+        <table class="orders-table">
+          <thead><tr><th>Order ID</th><th>Customer</th><th>Plan</th><th>Amount</th><th>UTR</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="ordersTableBody"></tbody>
+        </table>
+        <div class="no-data" id="noOrders" style="display:none;">No orders yet.</div>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <h4><span class="dot"></span>Registered Users</h4>
+      <div style="overflow-x:auto;">
+        <table class="users-table">
+          <thead><tr><th>Name</th><th>Email</th><th>Joined</th></tr></thead>
+          <tbody id="usersTableBody"></tbody>
+        </table>
+        <div class="no-data" id="noUsers" style="display:none;">No users yet.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = (window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1')
+  ? `http://${window.location.hostname}:3000` : '';
+
+let currentUser  = JSON.parse(localStorage.getItem('nx_user'))       || null;
+let userToken    = localStorage.getItem('nx_token')                  || null;
+let adminToken   = localStorage.getItem('nx_admin_token')            || null;
+let currentPlan  = null;
+let siteSettings = {};
+let plans        = [];
+
+async function apiFetch(path, opts={}) {
+  const headers = {'Content-Type':'application/json',...(opts.headers||{})};
+  if(opts.auth  && userToken)  headers['Authorization'] = `Bearer ${userToken}`;
+  if(opts.admin && adminToken) headers['Authorization'] = `Bearer ${adminToken}`;
+  const res  = await fetch(API+path,{...opts,headers});
+  const data = await res.json();
+  if(!res.ok) throw new Error(data.error||'Request failed');
+  return data;
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+async function init() {
+  updateNavUI();
+  await loadPublicSettings();
+}
+
+async function loadPublicSettings() {
+  try {
+    siteSettings = await apiFetch('/api/settings/public');
+    plans = siteSettings.plans || [];
+  } catch { plans = defaultPlans(); }
+  renderPlans();
+  updateSupportLinks();
+}
+
+function defaultPlans() {
+  return [
+    {name:'Starter', cpu:'1 vCPU', ram:'1 GB',  storage:'20 GB SSD',  price:199,  orig:399,  badge:'',        featured:false},
+    {name:'Basic',   cpu:'2 vCPU', ram:'2 GB',  storage:'40 GB SSD',  price:399,  orig:699,  badge:'',        featured:false},
+    {name:'Pro',     cpu:'4 vCPU', ram:'4 GB',  storage:'80 GB SSD',  price:799,  orig:1299, badge:'Popular', featured:true},
+    {name:'Business',cpu:'6 vCPU', ram:'8 GB',  storage:'160 GB SSD', price:1499, orig:2299, badge:'',        featured:false},
+    {name:'Enterprise',cpu:'8 vCPU',ram:'16 GB',storage:'320 GB SSD', price:2499, orig:3999, badge:'',        featured:false},
+    {name:'Custom',  cpu:'Custom', ram:'Custom', storage:'Custom',     price:0,    orig:0,    badge:'',        featured:false}
+  ];
+}
+
+// ── PAGES ─────────────────────────────────────────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+}
+
+async function showMyOrders() {
+  if(!currentUser){openAuthModal();return;}
+  showPage('orders');
+  const list = document.getElementById('myOrdersList');
+  list.innerHTML = '<div style="text-align:center;color:var(--gray);padding:40px;">Loading...</div>';
+  try {
+    const orders = await apiFetch('/api/orders/mine',{auth:true});
+    if(!orders.length){
+      list.innerHTML='<div style="text-align:center;color:var(--gray);padding:40px;font-size:0.9rem;">No orders yet. <a href="#" onclick="showPage(\'home\')" style="color:var(--cyan)">Browse plans →</a></div>';
+      return;
+    }
+    list.innerHTML = orders.map(o => `
+      <div class="order-card ${o.status}">
+        <div class="oc-header">
+          <div>
+            <div class="oc-id">${o.orderId}</div>
+            <div class="oc-plan">${o.plan}</div>
+            <div class="oc-specs">${o.cpu} | ${o.ram} | ${o.storage}</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="oc-price">₹${Number(o.price).toLocaleString('en-IN')}</div>
+            <span class="status-pill ${o.status}">${statusLabel(o.status)}</span>
+          </div>
+        </div>
+        <div class="oc-body">
+          <div><span>UTR:</span>${o.utr}</div>
+          <div><span>Duration:</span>${o.duration}</div>
+          <div><span>OS:</span>${o.os||'Not specified'}</div>
+          <div><span>Ordered:</span>${new Date(o.createdAt).toLocaleDateString('en-IN')}</div>
+        </div>
+        ${o.status==='approved' && o.vpsIp ? `
+        <div class="cred-box">
+          <h5>🖥️ Your VPS Credentials</h5>
+          <div class="cred-grid">
+            <div><label>IP Address</label><div class="cred-val"><span>${o.vpsIp}</span><button class="copy-btn" onclick="copyText('${o.vpsIp}',this)">📋 Copy</button></div></div>
+            <div><label>SSH Port</label><div class="cred-val"><span>${o.vpsPort||22}</span><button class="copy-btn" onclick="copyText('${o.vpsPort||22}',this)">📋 Copy</button></div></div>
+            <div><label>Username</label><div class="cred-val"><span>${o.vpsUsername||'root'}</span><button class="copy-btn" onclick="copyText('${o.vpsUsername||'root'}',this)">📋 Copy</button></div></div>
+            <div><label>Password</label><div class="cred-val"><span>${o.vpsPassword}</span><button class="copy-btn" onclick="copyText('${o.vpsPassword}',this)">📋 Copy</button></div></div>
+            ${o.vpsNote?`<div style="grid-column:1/-1"><label>Note</label><div class="cred-val"><span>${o.vpsNote}</span></div></div>`:''}
+          </div>
+        </div>` : o.status==='verified'||o.status==='pending' ? `
+        <div class="pending-cred"><span>⏳</span>Your VPS is being configured. Credentials will appear here once approved by admin.</div>` : ''}
+      </div>`).join('');
+  } catch(e) {
+    list.innerHTML=`<div style="text-align:center;color:var(--red);padding:40px;">${e.message}</div>`;
+  }
+}
+
+function statusLabel(s){
+  return {pending:'⏳ Pending',verified:'🔍 Verified',approved:'✅ Active',rejected:'❌ Rejected'}[s]||s;
+}
+
+function copyText(text,btn){
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='✅ Copied'; setTimeout(()=>btn.textContent='📋 Copy',2000);
+  });
+}
+
+// ── PLANS ─────────────────────────────────────────────────────────────────────
+function renderPlans(){
+  const grid=document.getElementById('plansGrid');
+  grid.innerHTML=plans.map(p=>{
+    const isCustom=p.price===0;
+    const save=p.orig>0?Math.round((1-p.price/p.orig)*100):0;
+    return `
+    <div class="plan-card${p.featured?' featured':''}">
+      ${p.badge?`<div class="featured-label">${p.badge}</div>`:''}
+      <div class="plan-name">${p.name}</div>
+      ${save>0?`<div><span class="save-badge">SAVE ${save}%</span><span class="orig-price">₹${p.orig}/mo</span></div>`:''}
+      <div class="plan-price">
+        ${isCustom?`<span style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;">Custom</span>`
+          :`<span class="price-sym">₹</span><span class="price-num">${p.price.toLocaleString('en-IN')}</span>`}
+      </div>
+      ${!isCustom?`<div class="price-mo">/month</div>`:''}
+      <div class="plan-term">Billed monthly · Cancel anytime</div>
+      <hr class="plan-divider">
+      <ul class="plan-specs">
+        <li><span class="spec-dot"></span>${p.cpu}</li>
+        <li><span class="spec-dot"></span>${p.ram} RAM</li>
+        <li><span class="spec-dot"></span>${p.storage}</li>
+        <li><span class="spec-dot"></span>1 Gbps Network</li>
+        <li><span class="spec-dot"></span>Full Root Access</li>
+        <li><span class="spec-dot"></span>Free DDoS Protection</li>
+      </ul>
+      <button class="btn-buy" onclick='buyPlan(${JSON.stringify(p)})'>
+        ${isCustom?'Contact Sales':'Order Now'}
+      </button>
+    </div>`;
+  }).join('');
+}
+
+function updateSupportLinks(){
+  const wa=siteSettings.wa||'919876543210';
+  const tg=siteSettings.tg||'@BotHostSupport';
+  document.getElementById('waBtn').href=`https://wa.me/${wa}`;
+  document.getElementById('tgBtn').href=`https://t.me/${tg.replace('@','')}`;
+}
+
+// ── AUTH ──────────────────────────────────────────────────────────────────────
+function updateNavUI(){
+  const btns=document.getElementById('navBtns');
+  const link=document.getElementById('myOrdersLink');
+  if(currentUser){
+    const ini=currentUser.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+    btns.innerHTML=`<div class="user-pill"><div class="user-avatar">${ini}</div><span>${currentUser.name.split(' ')[0]}</span><button class="btn-logout" onclick="doLogout()">Logout</button></div>`;
+    link.style.display='block';
+  } else {
+    btns.innerHTML=`<button class="btn-login" onclick="openAuthModal()">Login / Sign Up</button>`;
+    link.style.display='none';
+  }
+}
+
+function openAuthModal(){document.getElementById('authOverlay').classList.add('active');clearAuthForms();}
+function closeAuthModal(){document.getElementById('authOverlay').classList.remove('active');}
+function switchAuthTab(tab){
+  document.getElementById('tabLogin').classList.toggle('active',tab==='login');
+  document.getElementById('tabRegister').classList.toggle('active',tab==='register');
+  document.getElementById('loginForm').style.display=tab==='login'?'block':'none';
+  document.getElementById('registerForm').style.display=tab==='register'?'block':'none';
+  clearAuthMessages();
+}
+function clearAuthForms(){
+  ['loginEmail','loginPassword','regName','regEmail','regPassword','regConfirm'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  clearAuthMessages(); switchAuthTab('login');
+}
+function clearAuthMessages(){showAuthError('');showAuthSuccess('');}
+function showAuthError(m){const e=document.getElementById('authError');e.textContent=m;e.className='error-msg'+(m?' show':'');}
+function showAuthSuccess(m){const e=document.getElementById('authSuccess');e.textContent=m;e.className='success-msg'+(m?' show':'');}
+
+async function doLogin(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const password=document.getElementById('loginPassword').value;
+  if(!email||!password)return showAuthError('Email and password are required.');
+  const btn=document.getElementById('loginBtn');
+  btn.disabled=true; btn.innerHTML='<span class="loading-spinner"></span>Logging in...';
+  try{
+    const data=await apiFetch('/api/auth/login',{method:'POST',body:JSON.stringify({email,password})});
+    userToken=data.token; currentUser=data.user;
+    localStorage.setItem('nx_token',userToken); localStorage.setItem('nx_user',JSON.stringify(currentUser));
+    updateNavUI(); closeAuthModal();
+  }catch(err){showAuthError(err.message);}
+  finally{btn.disabled=false; btn.textContent='Login to Account';}
+}
+
+async function doRegister(){
+  const name=document.getElementById('regName').value.trim();
+  const email=document.getElementById('regEmail').value.trim();
+  const password=document.getElementById('regPassword').value;
+  const confirm=document.getElementById('regConfirm').value;
+  if(!name||!email||!password)return showAuthError('All fields are required.');
+  if(password!==confirm)return showAuthError('Passwords do not match.');
+  if(password.length<6)return showAuthError('Password must be at least 6 characters.');
+  const btn=document.getElementById('registerBtn');
+  btn.disabled=true; btn.innerHTML='<span class="loading-spinner"></span>Creating account...';
+  try{
+    const data=await apiFetch('/api/auth/register',{method:'POST',body:JSON.stringify({name,email,password})});
+    userToken=data.token; currentUser=data.user;
+    localStorage.setItem('nx_token',userToken); localStorage.setItem('nx_user',JSON.stringify(currentUser));
+    updateNavUI(); closeAuthModal();
+  }catch(err){showAuthError(err.message);}
+  finally{btn.disabled=false; btn.textContent='Create Account';}
+}
+
+function doLogout(){
+  userToken=null; currentUser=null;
+  localStorage.removeItem('nx_token'); localStorage.removeItem('nx_user');
+  updateNavUI(); showPage('home');
+}
+
+// ── ORDER ─────────────────────────────────────────────────────────────────────
+function buyPlan(plan){
+  if(!currentUser){openAuthModal();return;}
+  if(plan.price===0){
+    const wa=siteSettings.wa||'919876543210';
+    window.open(`https://wa.me/${wa}?text=Hi, I need a Custom VPS plan. Please share details.`,'_blank');
+    return;
+  }
+  currentPlan=plan;
+  // Reset OS and Location selections
+  document.querySelectorAll('.os-card').forEach((c,i)=>c.classList.toggle('selected',i===0));
+  document.querySelectorAll('.loc-card').forEach((c,i)=>c.classList.toggle('selected',i===0));
+  document.getElementById('os1Plan').textContent=plan.name;
+  document.getElementById('os1PlanLabel').textContent=`${plan.cpu} · ${plan.ram} · ${plan.storage}`;
+  document.getElementById('os1Specs').textContent=`${plan.cpu} | ${plan.ram} | ${plan.storage}`;
+  document.getElementById('os1Price').textContent=`₹${plan.price.toLocaleString('en-IN')}/month`;
+  document.getElementById('os2Plan').textContent=plan.name;
+  document.getElementById('os2Price').textContent=`₹${plan.price.toLocaleString('en-IN')}`;
+  document.getElementById('upiAmtTxt').textContent=`₹${plan.price.toLocaleString('en-IN')}`;
+  const upiId=siteSettings.upiId||'yourname@bharatpe';
+  document.getElementById('upiQr').src=siteSettings.qrUrl||`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=${encodeURIComponent(upiId)}&am=${plan.price}&cu=INR`;
+  document.getElementById('upiIdDisplay').textContent=upiId;
+  document.getElementById('waInput').value='';
+  document.getElementById('utrInput').value='';
+  document.getElementById('oerr1').classList.remove('show');
+  document.getElementById('oerr2').classList.remove('show');
+  document.getElementById('utrVerifyStatus').style.display='none';
+  goOrderStep(1);
+  document.getElementById('orderOverlay').classList.add('active');
+}
+
+function selectOS(card){
+  document.querySelectorAll('.os-card').forEach(c=>c.classList.remove('selected'));
+  card.classList.add('selected');
+}
+
+function selectLocation(card){
+  document.querySelectorAll('.loc-card').forEach(c=>c.classList.remove('selected'));
+  card.classList.add('selected');
+}
+
+function getSelectedOS(){
+  const sel=document.querySelector('.os-card.selected .os-name');
+  return sel?sel.textContent:'Ubuntu 24.04';
+}
+
+function getSelectedLocation(){
+  const sel=document.querySelector('.loc-card.selected .loc-name');
+  return sel?sel.textContent:'India';
+}
+
+function closeOrderModal(){
+  document.getElementById('orderOverlay').classList.remove('active');
+  document.getElementById('utrInput').value='';
+  document.getElementById('oerr1').classList.remove('show');
+  document.getElementById('oerr2').classList.remove('show');
+  document.getElementById('utrVerifyStatus').style.display='none';
+}
+
+function goOrderStep(n){
+  if(n===2){
+    const wa=document.getElementById('waInput').value.trim();
+    if(!wa){document.getElementById('oerr1').classList.add('show');return;}
+    document.getElementById('oerr1').classList.remove('show');
+  }
+  [1,2,3].forEach(i=>document.getElementById('ostep'+i).classList.toggle('active',i===n));
+}
+
+function onUTRInput(){
+  const val=document.getElementById('utrInput').value.trim();
+  document.getElementById('utrVerifyStatus').style.display=(/^\d{10,24}$/.test(val)&&val)?'block':'none';
+  if(val)document.getElementById('oerr2').classList.remove('show');
+}
+
+function copyUPI(){
+  navigator.clipboard.writeText(siteSettings.upiId||'').then(()=>{
+    document.getElementById('copyHintTxt').textContent='✅ Copied!';
+    setTimeout(()=>document.getElementById('copyHintTxt').textContent='👆 Click to copy UPI ID',2000);
+  });
+}
+
+async function submitOrder(){
+  const wa=document.getElementById('waInput').value.trim();
+  const utr=document.getElementById('utrInput').value.trim();
+  const os=getSelectedOS();
+  const location=getSelectedLocation();
+  if(!/^\d{10,24}$/.test(utr)){document.getElementById('oerr2').classList.add('show');return;}
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true; btn.innerHTML='<span class="loading-spinner"></span>Verifying & submitting...';
+  try{
+    const data=await apiFetch('/api/orders',{method:'POST',auth:true,body:JSON.stringify({
+      plan:currentPlan.name,cpu:currentPlan.cpu,ram:currentPlan.ram,storage:currentPlan.storage,
+      price:currentPlan.price,duration:'1 Month',os:`${os} · ${location}`,whatsapp:wa,utr
+    })});
+    document.getElementById('finalOrderId').textContent=data.orderId;
+    goOrderStep(3);
+  }catch(err){
+    document.getElementById('oerr2').textContent='⚠️ '+err.message;
+    document.getElementById('oerr2').classList.add('show');
+  }finally{btn.disabled=false; btn.textContent='✅ Confirm & Submit Order';}
+}
+
+// ── ADMIN ─────────────────────────────────────────────────────────────────────
+let logoClickCount=0;
+document.getElementById('logoEl').addEventListener('click',()=>{
+  logoClickCount++;
+  if(logoClickCount>=5){logoClickCount=0;openAdminLogin();}
+  setTimeout(()=>logoClickCount=0,2000);
+});
+
+function openAdminLogin(){
+  document.getElementById('adminLoginOverlay').style.display='flex';
+  document.getElementById('adminLoginErr').classList.remove('show');
+  document.getElementById('adminUsername').value='';
+  document.getElementById('adminPassword').value='';
+}
+function closeAdminLogin(){document.getElementById('adminLoginOverlay').style.display='none';}
+
+async function doAdminLogin(){
+  const username=document.getElementById('adminUsername').value.trim();
+  const password=document.getElementById('adminPassword').value;
+  try{
+    const data=await apiFetch('/api/admin/login',{method:'POST',body:JSON.stringify({username,password})});
+    adminToken=data.token; localStorage.setItem('nx_admin_token',adminToken);
+    closeAdminLogin(); openAdmin();
+  }catch(err){
+    const el=document.getElementById('adminLoginErr');
+    el.textContent='⚠️ '+err.message; el.classList.add('show');
+  }
+}
+
+async function openAdmin(){
+  if(!adminToken){openAdminLogin();return;}
+  document.getElementById('adminPanel').style.display='block';
+  await Promise.all([loadAdminStats(),loadAdminSettings(),renderAdminPlans(),loadAdminOrders(),loadAdminUsers()]);
+}
+function closeAdmin(){document.getElementById('adminPanel').style.display='none';}
+
+async function loadAdminStats(){
+  try{
+    const s=await apiFetch('/api/admin/stats',{admin:true});
+    document.getElementById('statOrders').textContent=s.total;
+    document.getElementById('statPending').textContent=s.pending;
+    document.getElementById('statVerified').textContent=s.verified;
+    document.getElementById('statApproved').textContent=s.approved;
+    document.getElementById('statUsers').textContent=s.users;
+    document.getElementById('statRevenue').textContent='₹'+s.revenue.toLocaleString('en-IN');
+  }catch{}
+}
+
+async function loadAdminSettings(){
+  try{
+    const s=await apiFetch('/api/admin/settings',{admin:true});
+    document.getElementById('adminUpiId').value=s.upiId||'';
+    document.getElementById('adminQrUrl').value=s.qrUrl||'';
+    document.getElementById('adminWa').value=s.wa||'';
+    document.getElementById('adminTg').value=s.tg||'';
+    document.getElementById('adminBpMerchantId').value=s.bharatpeMerchantId||'';
+    document.getElementById('adminBpToken').value=s.bharatpeToken||'';
+  }catch{}
+}
+
+async function saveSettings(){
+  try{
+    await apiFetch('/api/admin/settings',{method:'POST',admin:true,body:JSON.stringify({
+      upiId:document.getElementById('adminUpiId').value.trim(),
+      qrUrl:document.getElementById('adminQrUrl').value.trim(),
+      wa:document.getElementById('adminWa').value.trim(),
+      tg:document.getElementById('adminTg').value.trim(),
+      bharatpeMerchantId:document.getElementById('adminBpMerchantId').value.trim(),
+      bharatpeToken:document.getElementById('adminBpToken').value.trim()
+    })});
+    const msg=document.getElementById('settingsSaved');
+    msg.classList.add('show'); setTimeout(()=>msg.classList.remove('show'),2500);
+    await loadPublicSettings();
+  }catch(err){alert('Error: '+err.message);}
+}
+
+function renderAdminPlans(){
+  document.getElementById('adminPlansBody').innerHTML=plans.map((p,i)=>`
+    <tr>
+      <td><strong>${p.name}</strong></td><td>${p.cpu}</td><td>${p.ram}</td><td>${p.storage}</td>
+      <td><input class="price-edit" type="number" id="pedit_${i}" value="${p.price}" min="0"/></td>
+      <td><input class="price-edit" type="number" id="oedit_${i}" value="${p.orig}"  min="0"/></td>
+    </tr>`).join('');
+}
+
+async function savePrices(){
+  plans.forEach((p,i)=>{
+    const pv=parseInt(document.getElementById('pedit_'+i).value);
+    const ov=parseInt(document.getElementById('oedit_'+i).value);
+    if(!isNaN(pv))p.price=pv; if(!isNaN(ov))p.orig=ov;
+  });
+  try{
+    await apiFetch('/api/admin/plans',{method:'POST',admin:true,body:JSON.stringify({plans})});
+    const msg=document.getElementById('pricesSaved');
+    msg.classList.add('show'); setTimeout(()=>msg.classList.remove('show'),3000);
+    renderPlans();
+  }catch(err){alert('Error: '+err.message);}
+}
+
+async function loadAdminOrders(){
+  try{
+    const orders=await apiFetch('/api/admin/orders',{admin:true});
+    const tbody=document.getElementById('ordersTableBody');
+    const noEl=document.getElementById('noOrders');
+    if(!orders.length){tbody.innerHTML='';noEl.style.display='block';return;}
+    noEl.style.display='none';
+    tbody.innerHTML=orders.map(o=>`
+      <tr>
+        <td><code style="font-size:.75rem;color:var(--cyan)">${o.orderId}</code></td>
+        <td>
+          <div style="font-weight:600">${o.customer}</div>
+          <div style="font-size:.72rem;color:var(--gray)">${o.email}</div>
+          <div style="font-size:.72rem;color:var(--gray)">📱 ${o.whatsapp||'—'}</div>
+        </td>
+        <td>
+          <div style="font-weight:600">${o.plan}</div>
+          <div style="font-size:.72rem;color:var(--gray)">${o.cpu}|${o.ram}|${o.storage}</div>
+          ${o.os?`<div style="font-size:.72rem;color:var(--gray)">OS: ${o.os}</div>`:''}
+        </td>
+        <td style="color:var(--cyan);font-weight:700">₹${Number(o.price).toLocaleString('en-IN')}</td>
+        <td><code style="font-size:.74rem;color:var(--gold)">${o.utr}</code></td>
+        <td><span class="status-pill ${o.status}">${statusLabel(o.status)}</span>
+          ${o.vpsIp?`<div style="font-size:.7rem;color:var(--gray);margin-top:3px">IP: ${o.vpsIp}</div>`:''}
+        </td>
+        <td>
+          ${(o.status==='verified'||o.status==='pending')?`
+            <button class="cred-btn" onclick="openCredModal('${o._id}','${o.orderId}','${o.customer}')">🖥️ Set VPS</button>
+            <button class="reject-btn" style="margin-top:4px" onclick="rejectOrder('${o._id}')">❌ Reject</button>`
+          : o.status==='approved'?`<button class="cred-btn" onclick="openCredModal('${o._id}','${o.orderId}','${o.customer}')">✏️ Update</button>`
+          :'—'}
+        </td>
+      </tr>`).join('');
+  }catch{}
+}
+
+function statusLabel(s){
+  return{pending:'⏳ Pending',verified:'🔍 Verified',approved:'✅ Approved',rejected:'❌ Rejected'}[s]||s;
+}
+
+async function rejectOrder(id){
+  if(!confirm('Reject this order?'))return;
+  try{await apiFetch(`/api/admin/orders/${id}/reject`,{method:'PATCH',admin:true});await loadAdminOrders();await loadAdminStats();}
+  catch(err){alert('Error: '+err.message);}
+}
+
+// Credentials modal
+function openCredModal(mongoId,orderId,customer){
+  document.getElementById('credOrderMongoId').value=mongoId;
+  document.getElementById('credOrderId').value=orderId;
+  document.getElementById('credModalSub').textContent=`Order ${orderId} — ${customer}`;
+  document.getElementById('credIp').value='';
+  document.getElementById('credUser').value='root';
+  document.getElementById('credPort').value='22';
+  document.getElementById('credPass').value='';
+  document.getElementById('credNote').value='';
+  document.getElementById('credErr').classList.remove('show');
+  document.getElementById('credOverlay').classList.add('active');
+}
+function closeCredModal(){document.getElementById('credOverlay').classList.remove('active');}
+
+async function submitCredentials(){
+  const mongoId=document.getElementById('credOrderMongoId').value;
+  const ip=document.getElementById('credIp').value.trim();
+  const user=document.getElementById('credUser').value.trim();
+  const port=document.getElementById('credPort').value.trim();
+  const pass=document.getElementById('credPass').value.trim();
+  const note=document.getElementById('credNote').value.trim();
+  if(!ip||!pass){
+    const el=document.getElementById('credErr');
+    el.textContent='⚠️ IP Address and Password are required.';
+    el.classList.add('show'); return;
+  }
+  const btn=document.getElementById('credSubmitBtn');
+  btn.disabled=true; btn.innerHTML='<span class="loading-spinner"></span>Saving...';
+  try{
+    await apiFetch(`/api/admin/orders/${mongoId}/credentials`,{method:'PATCH',admin:true,body:JSON.stringify({
+      vpsIp:ip,vpsUsername:user,vpsPassword:pass,vpsPort:port,vpsNote:note
+    })});
+    closeCredModal();
+    await loadAdminOrders();
+    await loadAdminStats();
+    alert(`✅ Credentials saved!\n\nCustomer can now login to the website and see:\nIP: ${ip}\nUser: ${user}\nPass: ${pass}`);
+  }catch(err){
+    const el=document.getElementById('credErr');
+    el.textContent='⚠️ '+err.message; el.classList.add('show');
+  }finally{btn.disabled=false; btn.textContent='✅ Save & Approve Order';}
+}
+
+async function loadAdminUsers(){
+  try{
+    const users=await apiFetch('/api/admin/users',{admin:true});
+    const tbody=document.getElementById('usersTableBody');
+    const noEl=document.getElementById('noUsers');
+    if(!users.length){tbody.innerHTML='';noEl.style.display='block';return;}
+    noEl.style.display='none';
+    tbody.innerHTML=users.map(u=>{
+      const ini=u.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+      return `<tr>
+        <td><div style="display:flex;align-items:center;"><div class="avatar-sm">${ini}</div><strong>${u.name}</strong></div></td>
+        <td style="color:var(--gray)">${u.email}</td>
+        <td style="color:var(--gray);font-size:.75rem">${new Date(u.createdAt).toLocaleDateString('en-IN')}</td>
+      </tr>`;
+    }).join('');
+  }catch{}
+}
+
+// Keyboard & overlay close
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeAuthModal();closeOrderModal();closeCredModal();}
+});
+document.getElementById('authOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('authOverlay'))closeAuthModal();});
+document.getElementById('orderOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('orderOverlay'))closeOrderModal();});
+document.getElementById('credOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('credOverlay'))closeCredModal();});
+
+init();
+</script>
+</body>
+</html>
